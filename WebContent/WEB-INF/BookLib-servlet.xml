@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:tx="http://www.springframework.org/schema/tx" xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+    http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd"
+    >
+    <mvc:annotation-driven />
+	<!-- 将基本的类识别成bean并进行装载 -->
+    <context:component-scan base-package="com.wcy" />
+    
+    <!-- 模型处理器，将Controller返回的模型解析为对应的jsp文件并返回前端 -->
+    <bean
+        class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
+    <bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
+    
+     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/pages/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+    
+    
+    
+    <!-- 处理图片的加载,使用了辅助类：StaticController -->
+    <mvc:resources location="/img/" mapping="/img/**"/>
+    
+    <bean name="/test/static" class="com.wcy.controller.StaticController">
+     <property name="methodNameResolver">
+      <ref bean="paramMethodResolver"/>
+     </property>
+    </bean>
+  <bean id="paramMethodResolver" class="org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver">
+  <property name="paramName" value="action"/>
+    </bean>
+    
+    
+    <!--
+    
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+        destroy-method="close" scope="singleton">
+        <property name="driverClass" value="com.mysql.jdbc.Driver" />
+         
+        <property name="jdbcUrl"
+            value="jdbc:mysql://localhost:3066/bookdb?useUnicode=true;characterEncoding=UTF-8;allowMultiQueries=true" />
+        <property name="username" value="root" />
+        <property name="password" value="qwe789" />
+        
+    </bean>
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate"
+          p:dataSource-ref="dataSource"/>
+    
+    
+    
+    <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">  
+       <property name="mappings">  
+           <value>  
+                user.do=userAction  
+			</value>  
+       </property>  
+    </bean>  
+     
+    
+    
+    <bean id="book" class="com.wcy.models.Book" />
+  
+    
+    <bean id="author" class="com.wcy.models.Author" />
+    -->
+   
+    
+   
+    
+    
+    
+</beans>
+    
+    

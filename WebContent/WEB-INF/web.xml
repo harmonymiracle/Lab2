@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee" 
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" 
+	id="WebApp_ID" 
+	version="3.1">
+	
+	<jsp-config>
+	<!--这一部分是用来处理jsp页面中tag的，因为会用到类似 foreach 之类的tag -->
+    <taglib>
+    <taglib-uri>http://java.sun.com/jstl/fmt</taglib-uri>
+    <taglib-location>/WEB-INF/fmt.tld</taglib-location>
+    </taglib>
+    <taglib>
+    <taglib-uri>http://java.sun.com/jstl/fmt-rt</taglib-uri>
+    <taglib-location>/WEB-INF/fmt-rt.tld</taglib-location>
+    </taglib>
+    <taglib>
+    <taglib-uri>http://java.sun.com/jstl/core</taglib-uri>
+    <taglib-location>/WEB-INF/c.tld</taglib-location>
+    </taglib>
+    <taglib>
+    <taglib-uri>http://java.sun.com/jstl/core-rt</taglib-uri>
+    <taglib-location>/WEB-INF/c-rt.tld</taglib-location>
+    </taglib>
+    <taglib>
+    <taglib-uri>http://java.sun.com/jstl/sql</taglib-uri>
+    <taglib-location>/WEB-INF/sql.tld</taglib-location>
+    </taglib>
+    <taglib>
+    <taglib-uri>http://java.sun.com/jstl/sql-rt</taglib-uri>
+    <taglib-location>/WEB-INF/sql-rt.tld</taglib-location>
+    </taglib>
+    <taglib>
+    <taglib-uri>http://java.sun.com/jstl/x</taglib-uri>
+    <taglib-location>/WEB-INF/x.tld</taglib-location>
+    </taglib>
+    <taglib>
+    <taglib-uri>http://java.sun.com/jstl/x-rt</taglib-uri>
+    <taglib-location>/WEB-INF/x-rt.tld</taglib-location>
+    </taglib>
+    </jsp-config>
+	
+	
+	
+	<!-- 这一部分是使用了  DWR（Direct Web Remoting）,来进行后台方法调用的  -->
+	<listener>
+    <listener-class>org.directwebremoting.servlet.DwrListener</listener-class>
+  </listener>
+  
+  <servlet>
+    <servlet-name>dwr-invoker</servlet-name>
+    
+    
+    <servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
+	
+	<init-param>
+     <param-name>fileUploadMaxBytes</param-name>
+     <param-value>25000</param-value>
+    </init-param>
+	
+    <init-param>
+      <param-name>debug</param-name>
+      <param-value>true</param-value>
+    </init-param>
+  
+	<init-param>
+      <param-name>accessLogLevel</param-name>
+      <param-value>runtimeexception</param-value>
+    </init-param>
+    
+    
+    <init-param>
+      <param-name>activeReverseAjaxEnabled</param-name>
+      <param-value>true</param-value>
+    </init-param>
+
+    
+    <init-param>
+      <param-name>initApplicationScopeCreatorsAtStartup</param-name>
+      <param-value>true</param-value>
+    </init-param>
+
+    <init-param>
+      <param-name>jsonRpcEnabled</param-name>
+      <param-value>true</param-value>
+    </init-param>
+
+    
+    <init-param>
+      <param-name>jsonpEnabled</param-name>
+      <param-value>true</param-value>
+    </init-param>
+
+    
+    <init-param>
+      <param-name>preferDataUrlSchema</param-name>
+      <param-value>false</param-value>
+    </init-param>
+
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+   
+  <servlet-mapping>
+    <servlet-name>dwr-invoker</servlet-name>
+    <url-pattern>/dwr/*</url-pattern>
+  </servlet-mapping>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- 这一部分是处理前段url映射及处理，包括解析器和过滤器 -->
+  <display-name>BookLib</display-name>
+  
+  <filter>  
+        <filter-name>characterEncodingFilter</filter-name>  
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>  
+        <init-param>  
+            <param-name>encoding</param-name>  
+            <param-value>UTF-8</param-value>  
+        </init-param>  
+        <init-param>  
+            <param-name>forceEncoding</param-name>  
+            <param-value>true</param-value>  
+        </init-param>  
+    </filter>  
+    <filter-mapping>  
+        <filter-name>characterEncodingFilter</filter-name>  
+        <url-pattern>/*</url-pattern>  
+    </filter-mapping>  
+  
+  
+  
+  
+  <servlet>
+		<servlet-name>BookLib</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<!--  init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/BookLib-servlet.xml</param-value>
+		</init-param>-->
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>BookLib</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+	
+	<!-- 这一部分是处理静态文件的访问及加载 -->
+	 <!-- static resources -->  
+    <servlet-mapping>  
+        <servlet-name>default</servlet-name>  
+        <url-pattern>*.css</url-pattern>  
+    </servlet-mapping>  
+  
+    <servlet-mapping>  
+        <servlet-name>default</servlet-name>  
+        <url-pattern>*.gif</url-pattern>  
+  
+    </servlet-mapping>  
+  
+    <servlet-mapping>  
+        <servlet-name>default</servlet-name>  
+        <url-pattern>*.jpg</url-pattern>  
+    </servlet-mapping>  
+  
+    <servlet-mapping>  
+        <servlet-name>default</servlet-name>  
+        <url-pattern>*.js</url-pattern>  
+    </servlet-mapping>  
+	
+	
+	
+  <!-- 简单的页面处理，比如欢迎界面和404界面 -->
+  <welcome-file-list>
+    <welcome-file>home.html</welcome-file>
+    <welcome-file>home.htm</welcome-file>
+    <welcome-file>home.jsp</welcome-file>
+    
+  </welcome-file-list>
+  
+   <error-page> <!--当系统出现404错误，跳转到页面home.html-->  
+        <error-code>404</error-code>  
+        <location>/home.jsp</location>  
+    </error-page>  
+    <error-page> <!--当系统出现java.lang.NullPointerException，跳转到页面error.html-->  
+        <exception-type>java.lang.NullPointerException</exception-type>  
+        <location>/error.html</location>  
+    </error-page>  
+    <session-config><!--会话超时配置，单位分钟-->  
+        <session-timeout>360</session-timeout>  
+    </session-config>  
+  
+  
+  
+</web-app>
